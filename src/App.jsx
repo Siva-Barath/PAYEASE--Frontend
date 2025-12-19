@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, useEffect } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -19,13 +19,19 @@ import AdminDashboard from './pages/AdminDashboard';
 function AppContent() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+  
+  // Handle SPA rewrite URLs - check if this is a payment URL that was rewritten
+  const urlParams = new URLSearchParams(location.search);
+  const hasPaymentParams = urlParams.has('mobile') && urlParams.has('operator') && urlParams.has('amount');
+  const isPaymentRoute = (location.pathname === '/' || location.pathname === '/index.html') && hasPaymentParams;
 
   return (
     <div className="min-h-screen bg-gray-50">
       {!isAdminRoute && <Navbar />}
       <main>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={isPaymentRoute ? <PaymentPage /> : <Home />} />
+          <Route path="/index.html" element={isPaymentRoute ? <PaymentPage /> : <Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
