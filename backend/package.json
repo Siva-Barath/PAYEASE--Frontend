@@ -1,0 +1,29 @@
+{
+  "name": "topify-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Topify recharge application",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "seed": "node src/seedData.js",
+    "seed-admin": "node src/seedAdmin.js",
+    "seed-plans": "node src/seedPlans.js",
+    "seed-sample-plans": "node src/seedSamplePlans.js",
+    "seed-professional-plans": "node src/seedProfessionalPlans.js",
+    "seed-custom-plans": "node src/seedCustomPlans.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express-validator": "^7.0.1",
+    "axios": "^1.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
