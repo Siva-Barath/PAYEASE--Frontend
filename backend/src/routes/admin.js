@@ -131,11 +131,15 @@ router.get('/recharges', async (req, res) => {
 
 // Add new plan (admin only)
 router.post('/plans', [
-  body('name').notEmpty().withMessage('Plan name is required'),
+  body('operator').notEmpty().withMessage('Operator is required'),
+  body('category').notEmpty().withMessage('Category is required'),
   body('price').isNumeric().withMessage('Price must be a number'),
   body('validity').notEmpty().withMessage('Validity is required'),
   body('data').notEmpty().withMessage('Data is required'),
-  body('operator').notEmpty().withMessage('Operator is required')
+  body('calls').notEmpty().withMessage('Calls is required'),
+  body('sms').notEmpty().withMessage('SMS is required'),
+  body('type').notEmpty().withMessage('Type is required'),
+  body('highlight').notEmpty().withMessage('Highlight is required')
 ], async (req, res) => {
   try {
     const errors = validationResult(req);

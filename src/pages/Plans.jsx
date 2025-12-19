@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import API_CONFIG from '../config/api';
 import jioLogo from '../assets/jio.jpeg';
 import airtelLogo from '../assets/airtel.png';
 import viLogo from '../assets/vi.webp';
@@ -20,7 +21,7 @@ const Plans = () => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [selectedPlanForRecharge, setSelectedPlanForRecharge] = useState(null);
 
-  const API_BASE_URL = 'http://localhost:3001/api';
+  const API_BASE_URL = API_CONFIG.BASE_URL;
 
   useEffect(() => {
     fetchPlans();

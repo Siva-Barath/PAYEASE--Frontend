@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import payeaseLogo from '../assets/PAYEASE.png';
+import API_CONFIG from '../config/api';
 
 const PaymentPage = () => {
   const navigate = useNavigate();
@@ -71,7 +72,7 @@ const PaymentPage = () => {
           headers['Authorization'] = `Bearer ${token}`;
         }
         
-        const response = await fetch('http://localhost:3001/api/recharges', {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/recharges`, {
           method: 'POST',
           headers,
           body: JSON.stringify({

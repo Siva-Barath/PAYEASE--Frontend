@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import API_CONFIG from '../config/api';
 
 const Payment = () => {
   const [selectedMethod, setSelectedMethod] = useState('');
@@ -85,7 +86,7 @@ const Payment = () => {
       // Call backend API to create recharge
       const token = localStorage.getItem('token');
       if (token) {
-        const response = await fetch('http://localhost:3001/api/recharges', {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/recharges`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

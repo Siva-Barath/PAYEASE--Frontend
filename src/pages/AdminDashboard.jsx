@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_CONFIG from '../config/api';
 import jioLogo from '../assets/jio.jpeg';
 import airtelLogo from '../assets/airtel.png';
 import viLogo from '../assets/vi.webp';
@@ -46,7 +47,7 @@ const AdminDashboard = () => {
   });
   const [successMessage, setSuccessMessage] = useState('');
 
-  const API_BASE_URL = 'http://localhost:3001/api';
+  const API_BASE_URL = API_CONFIG.BASE_URL;
 
   const operators = [
     { id: 'Jio', name: 'Jio', logo: jioLogo, color: 'bg-blue-600' },
@@ -274,12 +275,20 @@ const AdminDashboard = () => {
     e.preventDefault();
     try {
       const planData = {
-        ...newPlan,
-        _id: 'plan_' + Date.now(),
+        operator: newPlan.operator,
+        category: newPlan.category,
         price: Number(newPlan.price),
-        benefits: newPlan.benefits.filter(b => b.trim() !== ''),
-        createdAt: new Date().toISOString()
+        validity: newPlan.validity,
+        data: newPlan.data,
+        calls: newPlan.calls,
+        sms: newPlan.sms,
+        type: newPlan.type,
+        popular: newPlan.popular,
+        highlight: newPlan.highlight,
+        benefits: newPlan.benefits.filter(b => b.trim() !== '')
       };
+      
+      console.log('Sending plan data:', planData);
       
       // Try backend first
       try {
@@ -292,15 +301,26 @@ const AdminDashboard = () => {
           body: JSON.stringify(planData)
         });
         
+        console.log('Response status:', response.status);
+        const responseData = await response.text();
+        console.log('Response data:', responseData);
+        
         if (response.ok) {
           fetchPlans();
         } else {
-          throw new Error('Backend failed');
+          console.error('Backend error:', responseData);
+          throw new Error('Backend failed: ' + responseData);
         }
       } catch (backendError) {
+        console.error('Backend error:', backendError);
         // If backend fails, add to local plans and localStorage
+        const fallbackPlan = {
+          ...planData,
+          _id: 'plan_' + Date.now(),
+          createdAt: new Date().toISOString()
+        };
         setPlans(prevPlans => {
-          const newPlans = [...prevPlans, planData];
+          const newPlans = [...prevPlans, fallbackPlan];
           localStorage.setItem('adminPlans', JSON.stringify(newPlans));
           return newPlans;
         });
@@ -324,8 +344,8 @@ const AdminDashboard = () => {
       setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
       console.error('Error adding plan:', error);
-      setSuccessMessage('Error adding plan');
-      setTimeout(() => setSuccessMessage(''), 3000);
+      setSuccessMessage('Error adding plan: ' + error.message);
+      setTimeout(() => setSuccessMessage(''), 5000);
     }
   };
 
