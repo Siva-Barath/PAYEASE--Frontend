@@ -3,6 +3,7 @@ import { AppProvider } from './context/AppContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminProtectedRoute from './components/AdminProtectedRoute';
+import keepAliveService from './services/keepAliveService';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -50,6 +51,16 @@ function AppContent() {
 }
 
 function App() {
+  useEffect(() => {
+    // Start keep-alive service when app loads
+    keepAliveService.startKeepAlive();
+    
+    // Cleanup on unmount
+    return () => {
+      keepAliveService.stopKeepAlive();
+    };
+  }, []);
+
   return (
     <AppProvider>
       <BrowserRouter>
