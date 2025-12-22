@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, useLocation, useEffect } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
